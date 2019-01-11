@@ -16,33 +16,9 @@ export const getTodos = () => dispatch => {
 		)
 }
 
-export const createTodo = (userID, todo) => dispatch => {
+export const postRequest = (url, data) => dispatch => {
 	axios
-		.post('/api/todos/create', { userID, todo })
-		.then(res => dispatch(updateTodosInState(res.data)))
-		.catch(err => 
-			dispatch({
-				type: GET_ERRORS,
-				payload: err,
-			})
-		)
-}
-
-export const removeTodo = (userID, todoID) => dispatch => {
-	axios
-		.post('/api/todos/remove', { userID, todoID })
-		.then(res => dispatch(updateTodosInState(res.data)))
-		.catch(err => 
-			dispatch({
-				type: GET_ERRORS,
-				payload: err,
-			})
-		)
-}
-
-export const removeAllTodo = userID => dispatch => {
-	axios
-		.post('/api/todos/removeAll', {userID})
+		.post(`/api/todos/${url}`, data)
 		.then(res => dispatch(updateTodosInState(res.data)))
 		.catch(err => 
 			dispatch({

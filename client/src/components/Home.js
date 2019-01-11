@@ -3,18 +3,16 @@ import { connect } from 'react-redux'
 import { Redirect, withRouter } from 'react-router-dom'
 import PropTypes from 'prop-types'
 
-import classNames from 'classnames'
-
-import { getTodos, createTodo, removeTodo, removeAllTodo } from '../store/actions/todos'
+import { getTodos, postRequest } from '../store/actions/todos'
+import Card from './Card';
 
 
 class Home extends Component {
 	state = {
 		title: '',
 		description: '',
-		done: false,
+		done: false
 	}
-
 	componentDidMount() {
 		this.props.getTodos()
 	}
@@ -28,16 +26,12 @@ class Home extends Component {
 
 	handleSubmit = e => {
 		e.preventDefault()
-		const { createTodo, auth } = this.props
+		const { postRequest, auth } = this.props
 		const { title, description, done } = this.state
 		const userID = auth.user.id
-		const todo = {
-			title,
-			description,
-			done
-		}
-		createTodo(userID, todo)
-		this.setState({	
+		const todo = { title, description, done }
+		postRequest('create', { userID, todo })
+		this.setState({
 			title: '',
 			description: '',
 			done: false,
@@ -45,15 +39,21 @@ class Home extends Component {
 	}
 
 	onRemoveTodo = todoID => {
-		const { removeTodo, auth } = this.props
+		const { postRequest, auth } = this.props
 		const userID = auth.user.id
-		removeTodo(userID, todoID)
+		postRequest('remove', { userID, todoID })
 	}
 
 	onRemoveAllTodo = () => {
-		const { removeAllTodo, auth } = this.props
+		const { postRequest, auth } = this.props
 		const userID = auth.user.id
-		removeAllTodo(userID)
+		postRequest('removeAll', userID)
+	}
+
+	onEditTodo = todo => {
+		const { postRequest, auth } = this.props
+		const userID = auth.user.id
+		postRequest('edit', { userID, todo })
 	}
 
 	render() {
@@ -73,7 +73,7 @@ class Home extends Component {
 					</div>
 					<div className="form-group">
 						<label htmlFor="todoDescription">Example textarea</label>
-						<textarea className="form-control" id="todoDescription" rows="4" name="description" value={this.state.description} onChange={this.handleInputChange}></textarea>
+						<textarea className="form-control" id="todoDescription" rows="4" name="description" value={this.state.description} onChange={this.handleInputChange}/>
 					</div>
 					<div className="form-group form-check">
 						<input type="checkbox" className="form-check-input" id="todoDone" name="done" onChange={this.handleInputChange} checked={this.state.done}/>
@@ -92,18 +92,8 @@ class Home extends Component {
 					{
 						// ToDo
 						todos.todos.map(todo => {
-							const { id, title, description, done } = todo
 							return (
-								<div className={classNames({
-									"bg-dark": !done,
-									"bg-success": done
-								}, "card", "mb-3", "text-white")} key={id}>
-									<div className="card-body">
-										<h5 className="card-title">{title}</h5>
-										<p className="card-text">{description}</p>
-										<button className="btn btn-danger" onClick={() => this.onRemoveTodo(id)}>Delete</button>
-									</div>
-								</div>
+								<Card {...todo} removeTodo={this.onRemoveTodo} editTodo={this.onEditTodo} key={todo.id}/>
 							)
 						})
 					}
@@ -115,9 +105,7 @@ class Home extends Component {
 
 Home.propTypes = {
 	getTodos: PropTypes.func.isRequired,
-	createTodo: PropTypes.func.isRequired,
-	removeTodo: PropTypes.func.isRequired,
-	removeAllTodo: PropTypes.func.isRequired,
+	postRequest: PropTypes.func.isRequired,
 	auth: PropTypes.object.isRequired
 }
 
@@ -126,4 +114,4 @@ const mapStateToProps = state => ({
 	todos: state.todos
 })
 
-export default connect(mapStateToProps, { getTodos, createTodo, removeTodo, removeAllTodo })(withRouter(Home))
+export default connect(mapStateToProps, { getTodos, postRequest })(withRouter(Home))
