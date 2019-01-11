@@ -16,7 +16,6 @@ router.post(
 	'/create',
 	(req, res) => {
 		const { userID, todo } = req.body
-		console.log(userID, todo)
 		todo.id = genID()
 		User.findOneAndUpdate(
 			{ _id: userID },

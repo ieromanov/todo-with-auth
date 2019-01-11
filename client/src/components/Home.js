@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { Redirect, withRouter } from 'react-router-dom'
 import PropTypes from 'prop-types'
 
-import { getTodos, createTodo } from '../store/actions/todos'
+import { getTodos, createTodo, removeTodo } from '../store/actions/todos'
 
 
 class Home extends Component {
@@ -35,6 +35,13 @@ class Home extends Component {
 			done
 		}
 		createTodo(userID, todo)
+	}
+
+	onRemoveTodo = todoID => {
+		const { removeTodo, auth } = this.props
+		const userID = auth.user.id
+		removeTodo(userID, todoID)
+		console.log('remove')
 	}
 
 	render() {
@@ -76,7 +83,7 @@ class Home extends Component {
 									<div className="card-body">
 										<h5 className="card-title">{title}</h5>
 										<p className="card-text">{description}</p>
-										<button href="#" className="btn btn-danger">Delete</button>
+										<button className="btn btn-danger" onClick={() => this.onRemoveTodo(id)}>Delete</button>
 									</div>
 								</div>
 							)
@@ -91,6 +98,7 @@ class Home extends Component {
 Home.propTypes = {
 	getTodos: PropTypes.func.isRequired,
 	createTodo: PropTypes.func.isRequired,
+	removeTodo: PropTypes.func.isRequired,
 	auth: PropTypes.object.isRequired
 }
 
@@ -99,4 +107,4 @@ const mapStateToProps = state => ({
 	todos: state.todos
 })
 
-export default connect(mapStateToProps, { getTodos, createTodo })(withRouter(Home))
+export default connect(mapStateToProps, { getTodos, createTodo, removeTodo })(withRouter(Home))
