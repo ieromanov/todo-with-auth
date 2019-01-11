@@ -42,7 +42,7 @@ export const removeTodo = (userID, todoID) => dispatch => {
 
 export const removeAllTodo = userID => dispatch => {
 	axios
-		.post('/api/todos/remove', userID)
+		.post('/api/todos/removeAll', {userID})
 		.then(res => dispatch(updateTodosInState(res.data)))
 		.catch(err => 
 			dispatch({

@@ -3,7 +3,9 @@ import { connect } from 'react-redux'
 import { Redirect, withRouter } from 'react-router-dom'
 import PropTypes from 'prop-types'
 
-import { getTodos, createTodo, removeTodo } from '../store/actions/todos'
+import classNames from 'classnames'
+
+import { getTodos, createTodo, removeTodo, removeAllTodo } from '../store/actions/todos'
 
 
 class Home extends Component {
@@ -35,13 +37,23 @@ class Home extends Component {
 			done
 		}
 		createTodo(userID, todo)
+		this.setState({	
+			title: '',
+			description: '',
+			done: false,
+		})
 	}
 
 	onRemoveTodo = todoID => {
 		const { removeTodo, auth } = this.props
 		const userID = auth.user.id
 		removeTodo(userID, todoID)
-		console.log('remove')
+	}
+
+	onRemoveAllTodo = () => {
+		const { removeAllTodo, auth } = this.props
+		const userID = auth.user.id
+		removeAllTodo(userID)
 	}
 
 	render() {
@@ -53,7 +65,7 @@ class Home extends Component {
 			<div className="container">
 				<h1>Todos</h1>
 
-				<form onSubmit={this.handleSubmit} className="mb-5">
+				<form onSubmit={this.handleSubmit} className="mb-3">
 					<h2>Create todo</h2>
 					<div className="form-group">
 						<label htmlFor="todoTitle">Todo title</label>
@@ -72,14 +84,20 @@ class Home extends Component {
 					</button>
 				</form>
 
-				<h2>Todo list</h2>
+				<div className="row mb-3">
+					<h2 className="col-auto mr-auto">Todo list</h2>
+					<button className="btn btn-danger coll-auto" onClick={this.onRemoveAllTodo}>Delete All</button>
+				</div>
 				<div className="card-columns">
 					{
 						// ToDo
 						todos.todos.map(todo => {
-							const { id, title, description } = todo
+							const { id, title, description, done } = todo
 							return (
-								<div className="card mb-3 text-white bg-dark" key={id}>
+								<div className={classNames({
+									"bg-dark": !done,
+									"bg-success": done
+								}, "card", "mb-3", "text-white")} key={id}>
 									<div className="card-body">
 										<h5 className="card-title">{title}</h5>
 										<p className="card-text">{description}</p>
@@ -99,6 +117,7 @@ Home.propTypes = {
 	getTodos: PropTypes.func.isRequired,
 	createTodo: PropTypes.func.isRequired,
 	removeTodo: PropTypes.func.isRequired,
+	removeAllTodo: PropTypes.func.isRequired,
 	auth: PropTypes.object.isRequired
 }
 
@@ -107,4 +126,4 @@ const mapStateToProps = state => ({
 	todos: state.todos
 })
 
-export default connect(mapStateToProps, { getTodos, createTodo, removeTodo })(withRouter(Home))
+export default connect(mapStateToProps, { getTodos, createTodo, removeTodo, removeAllTodo })(withRouter(Home))
