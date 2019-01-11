@@ -21,8 +21,11 @@ export const getTodos = () => dispatch => {
 
 export const createTodo = (userID, todo) => dispatch => {
 	axios
-		.post('/api/todos/create', userID, todo)
-		.then(res => dispatch(updateTodosInState(res.data)))
+		.post('/api/todos/create', { userID, todo })
+		.then(res => {
+			dispatch(updateTodosInState(res.data))
+			console.log(res.data)
+		})
 		.catch(err => 
 			dispatch({
 				type: GET_ERRORS,
