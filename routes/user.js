@@ -48,6 +48,7 @@ router.post('/register', (req, res) => {
                         newUser.save().then(user => res.json(user))
                 })
             })
+            res.status(200)
         })
 })
 
@@ -91,6 +92,7 @@ router.post('/login', (req, res) => {
                         }
                     )
                 })
+            res.status(200)
         })
 })
 
@@ -102,8 +104,8 @@ router.get(
             id: req.user.id,
             name: req.user.name,
             email: req.user.email
-        });
+        })
     }
-);
+)
 
 module.exports = router;

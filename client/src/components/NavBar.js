@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
-import PropTypes from "prop-types"
+import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 
@@ -14,7 +14,7 @@ class NavBar extends Component {
 	}
 
 	render() {
-		const {isAuth, user} = this.props.auth;
+		const {isAuth, user} = this.props.auth
 		const authLinks = (
 			<ul className="navbar-nav ml-auto">
 				<div className="nav-link" onClick={ this.onLogout }>
@@ -36,7 +36,7 @@ class NavBar extends Component {
 			</ul>
 		)
 		return(
-			<nav className="navbar navbar-expand-lg navbar-light bg-light">
+			<nav className="navbar navbar-expand-lg navbar-dark bg-dark">
 				<Link className="navbar-brand" to="/">Redux Node Auth</Link>
 				<div className="collapse navbar-collapse" id="navbarSupportedContent">
 					{isAuth ? authLinks : guestLinks}

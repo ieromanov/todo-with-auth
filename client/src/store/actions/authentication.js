@@ -28,17 +28,15 @@ export const loginUser = user => dispatch => {
 		.catch(err =>
 			dispatch({
 				type: GET_ERRORS,
-				payload: err.response.data,
+				payload: err,
 			})
 		)
 }
 
-export const setCurrentUser = decoded => {
-	return {
-		type: SET_CURRENT_USER,
-		payload: decoded
-	}
-}
+export const setCurrentUser = decoded => ({
+	type: SET_CURRENT_USER,
+	payload: decoded
+})
 
 export const logoutUser = history => dispatch => {
 	localStorage.removeItem('jwtToken')
