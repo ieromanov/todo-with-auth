@@ -11,7 +11,7 @@ const todos = require('./routes/todos')
 
 mongoose
 	.connect(
-		config.DB,
+		process.env.MONGOLAB_URI,
 		{ useNewUrlParser: true }
 	)
 	.then(() => {
