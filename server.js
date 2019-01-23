@@ -31,7 +31,7 @@ app.use(bodyParser.json())
 app.use('/api/users', users)
 app.use('/api/todos', todos)
 
-app.get('*', function(res, req) {
+app.get('*', function(req, res) {
 	res.sendFile(path.resolve(__dirname, 'public', 'index.html'))
 })
 
