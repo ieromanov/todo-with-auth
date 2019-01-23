@@ -36,6 +36,7 @@ app.use('/api/todos', todos)
 
 app.get('*', function(req, res) {
 	res.sendFile(path.resolve(__dirname, 'public', 'index.html'))
+	console.log(path.resolve(__dirname, 'public', 'index.html'))
 })
 
 const PORT = process.env.PORT || 5000
