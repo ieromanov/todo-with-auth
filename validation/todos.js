@@ -15,7 +15,7 @@ module.exports = function validateCreatedTodoInput(data) {
 	}
 	
 	if(validator.isEmpty(data.description)) {
-		errors.description = 'Password is required';
+		errors.description = 'Description is required';
 	}
 
 	if(!validator.isLength(data.description, {min: 0, max: 100})) {
