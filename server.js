@@ -31,8 +31,8 @@ app.use(bodyParser.json())
 app.use('/api/users', users)
 app.use('/api/todos', todos)
 
-app.get('*', (res, req) => {
-	res.send('hello')
+app.get('*', function(res, req) {
+	res.sendFile(path.resolve(__dirname, 'public', 'index.html'))
 })
 
 const PORT = process.env.PORT || 5000
