@@ -9,7 +9,10 @@ const users = require('./routes/user')
 const todos = require('./routes/todos')
 
 mongoose
-	.connect(process.env.MONGODB_URI)
+	.connect(
+		process.env.MONGODB_URI,
+		{ useNewUrlParser: true }
+	)
 	.then(() => {
 		console.log('Database is connected')
 	})
