@@ -30,13 +30,14 @@ require('./passport')(passport)
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
+app.use(express.static(path.join(__dirname, '/public')))
+
 // Routes
 app.use('/api/users', users)
 app.use('/api/todos', todos)
 
 app.get('*', function(req, res) {
 	res.sendFile(path.resolve(__dirname, 'public', 'index.html'))
-	console.log(path.resolve(__dirname, 'public', 'index.html'))
 })
 
 const PORT = process.env.PORT || 5000
