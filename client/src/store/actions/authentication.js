@@ -2,6 +2,7 @@ import axios from 'axios'
 import { GET_ERRORS, SET_CURRENT_USER } from './types'
 import setAuthToken from '../../setAuthToken'
 import jwtDecoded from 'jwt-decode'
+import { updateTodosInState } from './todos'
 
 export const registerUser = (user, history) => dispatch => {
 	axios
@@ -41,6 +42,7 @@ export const setCurrentUser = decoded => ({
 export const logoutUser = history => dispatch => {
 	localStorage.removeItem('jwtToken')
 	setAuthToken(false)
+	dispatch(updateTodosInState([]))
 	dispatch(setCurrentUser({}))
 	history.push('/login')
 }
