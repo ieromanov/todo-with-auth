@@ -16,6 +16,7 @@ router.get(
 
 router.post(
 	'/create',
+	passport.authenticate('jwt', { session: false }),
 	(req, res) => {
 		const { userID, todo } = req.body
 		const { errors, isValid } = validateCreatedTodoInput(todo)
@@ -34,6 +35,7 @@ router.post(
 
 router.post(
 	'/remove',
+	passport.authenticate('jwt', { session: false }),
 	(req, res) => {
 		const { userID, todoID } = req.body
 		User.findOneAndUpdate(
@@ -47,6 +49,7 @@ router.post(
 
 router.post(
 	'/removeAll',
+	passport.authenticate('jwt', { session: false }),
 	(req, res) => {
 		const { userID } = req.body
 		User.findByIdAndUpdate(
@@ -60,6 +63,7 @@ router.post(
 
 router.post(
 	'/edit',
+	passport.authenticate('jwt', { session: false }),
 	(req, res) => {
 		const { userID, todo } = req.body
 		User.updateOne(
